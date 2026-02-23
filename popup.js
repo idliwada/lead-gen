@@ -168,6 +168,7 @@ async function callApifyAPI(body) {
     document.getElementById('stats-bar').style.display = 'none';
     document.getElementById('results-container').style.display = 'none';
     document.getElementById('run-btn').disabled = true;
+    document.getElementById('fetch-by-website-btn').disabled = true;
 
     // Timer
     let elapsed = 0;
@@ -182,11 +183,16 @@ async function callApifyAPI(body) {
     try {
         const url = `https://api.apify.com/v2/acts/${encodeURIComponent(actorId)}/run-sync-get-dataset-items?token=${encodeURIComponent(token)}&maxItems=${maxItems}&format=json&clean=true`;
 
+        console.log('[Lead Gen] Request URL:', url);
+        console.log('[Lead Gen] Request Body:', JSON.stringify(body, null, 2));
+
         const response = await fetch(url, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(body)
         });
+
+        console.log('[Lead Gen] Response Status:', response.status);
 
         if (response.status === 408) {
             throw new Error('Request timed out (>300s). Try with fewer filters or smaller max results.');
@@ -204,6 +210,9 @@ async function callApifyAPI(body) {
         results = await response.json();
         currentPage = 1;
 
+        console.log('[Lead Gen] Results count:', Array.isArray(results) ? results.length : 1);
+        console.log('[Lead Gen] Sample result:', results[0] || results);
+
         if (!Array.isArray(results)) {
             results = [results];
         }
@@ -214,11 +223,16 @@ async function callApifyAPI(body) {
 
     } catch (err) {
         showLoading(false);
-        showToast(err.message, 'error');
+        console.error('[Lead Gen] Error:', err);
+        const errorMsg = err.message.includes('Failed to fetch')
+            ? 'Network error — check your API token and Actor ID. Make sure the extension has permission to access api.apify.com.'
+            : err.message;
+        showToast(errorMsg, 'error');
         document.getElementById('empty-state').style.display = 'flex';
     } finally {
         clearInterval(timerInterval);
         document.getElementById('run-btn').disabled = false;
+        document.getElementById('fetch-by-website-btn').disabled = false;
     }
 }
 
