@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Lead Gen</title>
+    <link rel="stylesheet" href="popup.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="app-header">
+        <div class="logo">
+            <i class="fas fa-crosshairs"></i>
+            <span>Lead Gen</span>
+        </div>
+        <button class="icon-btn" id="settings-toggle" title="Settings">
+            <i class="fas fa-cog"></i>
+        </button>
+    </header>
+
+    <!-- Settings Panel (collapsible) -->
+    <div class="settings-panel" id="settings-panel">
+        <div class="setting-row">
+            <label>Apify API Token</label>
+            <input type="password" id="api-token" placeholder="Enter your Apify API token">
+        </div>
+        <div class="setting-row">
+            <label>Actor ID</label>
+            <input type="text" id="actor-id" placeholder="e.g. curious_coder~leads-finder">
+        </div>
+        <button class="btn btn-accent btn-sm" id="save-settings">
+            <i class="fas fa-save"></i> Save Settings
+        </button>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content" id="main-content">
+        <!-- Filters Section -->
+        <div class="section">
+            <h3 class="section-title"><i class="fas fa-filter"></i> Filters</h3>
+
+            <div class="filter-grid">
+                <!-- Contact Location -->
+                <div class="filter-group full-width">
+                    <label>Contact Location</label>
+                    <input type="text" id="filter-location" placeholder="e.g. india, usa, uk (comma-separated)">
+                </div>
+
+                <!-- Email Status -->
+                <div class="filter-group">
+                    <label>Email Status</label>
+                    <div class="checkbox-group" id="filter-email-status">
+                        <label class="chip selected" data-value="validated"><input type="checkbox" checked>
+                            Validated</label>
+                        <label class="chip" data-value="unvalidated"><input type="checkbox"> Unvalidated</label>
+                        <label class="chip" data-value="catch_all"><input type="checkbox"> Catch All</label>
+                    </div>
+                </div>
+
+                <!-- Functional Level -->
+                <div class="filter-group">
+                    <label>Functional Level</label>
+                    <div class="checkbox-group" id="filter-functional-level">
+                        <label class="chip" data-value="c_suite"><input type="checkbox"> C-Suite</label>
+                        <label class="chip" data-value="human_resources"><input type="checkbox"> HR</label>
+                        <label class="chip" data-value="engineering"><input type="checkbox"> Engineering</label>
+                        <label class="chip" data-value="finance"><input type="checkbox"> Finance</label>
+                        <label class="chip" data-value="marketing"><input type="checkbox"> Marketing</label>
+                        <label class="chip" data-value="sales"><input type="checkbox"> Sales</label>
+                        <label class="chip" data-value="operations"><input type="checkbox"> Operations</label>
+                        <label class="chip" data-value="product"><input type="checkbox"> Product</label>
+                        <label class="chip" data-value="design"><input type="checkbox"> Design</label>
+                        <label class="chip" data-value="it"><input type="checkbox"> IT</label>
+                        <label class="chip" data-value="legal"><input type="checkbox"> Legal</label>
+                        <label class="chip" data-value="support"><input type="checkbox"> Support</label>
+                    </div>
+                </div>
+
+                <!-- Seniority Level -->
+                <div class="filter-group">
+                    <label>Seniority Level</label>
+                    <div class="checkbox-group" id="filter-seniority">
+                        <label class="chip" data-value="founder"><input type="checkbox"> Founder</label>
+                        <label class="chip" data-value="owner"><input type="checkbox"> Owner</label>
+                        <label class="chip" data-value="c_level"><input type="checkbox"> C-Level</label>
+                        <label class="chip" data-value="director"><input type="checkbox"> Director</label>
+                        <label class="chip" data-value="vp"><input type="checkbox"> VP</label>
+                        <label class="chip" data-value="head"><input type="checkbox"> Head</label>
+                        <label class="chip" data-value="manager"><input type="checkbox"> Manager</label>
+                        <label class="chip" data-value="senior"><input type="checkbox"> Senior</label>
+                        <label class="chip" data-value="entry"><input type="checkbox"> Entry</label>
+                    </div>
+                </div>
+
+                <!-- Funding Stage -->
+                <div class="filter-group">
+                    <label>Funding Stage</label>
+                    <div class="checkbox-group" id="filter-funding">
+                        <label class="chip" data-value="seed"><input type="checkbox"> Seed</label>
+                        <label class="chip" data-value="angel"><input type="checkbox"> Angel</label>
+                        <label class="chip" data-value="series_a"><input type="checkbox"> Series A</label>
+                        <label class="chip" data-value="series_b"><input type="checkbox"> Series B</label>
+                        <label class="chip" data-value="series_c"><input type="checkbox"> Series C</label>
+                        <label class="chip" data-value="series_d"><input type="checkbox"> Series D</label>
+                        <label class="chip" data-value="series_e"><input type="checkbox"> Series E</label>
+                        <label class="chip" data-value="series_f"><input type="checkbox"> Series F</label>
+                    </div>
+                </div>
+
+                <!-- Company Size -->
+                <div class="filter-group">
+                    <label>Company Size</label>
+                    <div class="checkbox-group" id="filter-size">
+                        <label class="chip" data-value="1-10"><input type="checkbox"> 1-10</label>
+                        <label class="chip" data-value="11-50"><input type="checkbox"> 11-50</label>
+                        <label class="chip" data-value="51-200"><input type="checkbox"> 51-200</label>
+                        <label class="chip" data-value="201-500"><input type="checkbox"> 201-500</label>
+                        <label class="chip" data-value="501-1000"><input type="checkbox"> 501-1K</label>
+                        <label class="chip" data-value="1001-2000"><input type="checkbox"> 1K-2K</label>
+                        <label class="chip" data-value="2001-5000"><input type="checkbox"> 2K-5K</label>
+                        <label class="chip" data-value="5001-10000"><input type="checkbox"> 5K-10K</label>
+                        <label class="chip" data-value="10001-20000"><input type="checkbox"> 10K-20K</label>
+                        <label class="chip" data-value="20001-50000"><input type="checkbox"> 20K-50K</label>
+                        <label class="chip" data-value="50000+"><input type="checkbox"> 50K+</label>
+                    </div>
+                </div>
+
+                <!-- Max Items -->
+                <div class="filter-group">
+                    <label>Max Results</label>
+                    <input type="number" id="max-items" value="100" min="1" max="5000" class="input-sm">
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-bar">
+            <button class="btn btn-primary btn-lg" id="run-btn">
+                <i class="fas fa-rocket"></i> Run Lead Finder
+            </button>
+        </div>
+
+        <!-- Loading State -->
+        <div class="loading-container" id="loading" style="display: none;">
+            <div class="spinner"></div>
+            <p class="loading-text">Finding leads... This may take a few minutes.</p>
+            <p class="loading-sub" id="loading-timer">Elapsed: 0s</p>
+        </div>
+
+        <!-- Stats Bar -->
+        <div class="stats-bar" id="stats-bar" style="display: none;">
+            <div class="stat">
+                <span class="stat-value" id="stat-total">0</span>
+                <span class="stat-label">Total</span>
+            </div>
+            <div class="stat">
+                <span class="stat-value accent" id="stat-emails">0</span>
+                <span class="stat-label">With Email</span>
+            </div>
+            <div class="stat-actions">
+                <button class="btn btn-accent btn-sm" id="copy-emails-btn" title="Copy all emails">
+                    <i class="fas fa-copy"></i> Emails
+                </button>
+                <button class="btn btn-secondary btn-sm" id="export-csv-btn" title="Export as CSV">
+                    <i class="fas fa-file-csv"></i> CSV
+                </button>
+            </div>
+        </div>
+
+        <!-- Results Table -->
+        <div class="results-container" id="results-container" style="display: none;">
+            <div class="table-wrapper">
+                <table id="results-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Title</th>
+                            <th>Company</th>
+                            <th>Location</th>
+                        </tr>
+                    </thead>
+                    <tbody id="results-body"></tbody>
+                </table>
+            </div>
+            <!-- Pagination -->
+            <div class="pagination" id="pagination"></div>
+        </div>
+
+        <!-- Empty / Error State -->
+        <div class="empty-state" id="empty-state">
+            <i class="fas fa-crosshairs"></i>
+            <p>Configure filters and click <strong>Run Lead Finder</strong></p>
+        </div>
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+
+</html>
