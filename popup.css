@@ -12,6 +12,68 @@
     --glass-blur: 12px;
 }
 
+/* Website Section */
+.website-section {
+    background: var(--card-bg);
+    border: 1px solid rgba(88, 166, 255, 0.2);
+    border-radius: 10px;
+    padding: 1rem;
+    backdrop-filter: blur(var(--glass-blur));
+}
+
+.website-input-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.website-input-wrapper textarea {
+    width: 100%;
+    padding: 0.6rem 0.8rem;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    color: var(--text-primary);
+    font-size: 0.8rem;
+    font-family: inherit;
+    resize: vertical;
+    outline: none;
+    transition: border-color 0.2s;
+    min-height: 60px;
+}
+
+.website-input-wrapper textarea:focus {
+    border-color: var(--accent);
+}
+
+.website-input-wrapper .btn {
+    align-self: flex-start;
+}
+
+/* Divider */
+.divider {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin: 0.8rem 0;
+}
+
+.divider::before,
+.divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border-color);
+}
+
+.divider span {
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+}
+
 * {
     margin: 0;
     padding: 0;

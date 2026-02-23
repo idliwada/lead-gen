@@ -38,6 +38,7 @@ function setupEventListeners() {
 
     document.getElementById('save-settings').addEventListener('click', saveSettings);
     document.getElementById('run-btn').addEventListener('click', runLeadFinder);
+    document.getElementById('fetch-by-website-btn').addEventListener('click', runByWebsite);
     document.getElementById('copy-emails-btn').addEventListener('click', copyEmails);
     document.getElementById('export-csv-btn').addEventListener('click', exportCSV);
 }
@@ -94,8 +95,55 @@ function buildRequestBody() {
     return body;
 }
 
+// --- Clean website domain ---
+function cleanDomain(input) {
+    let d = input.trim().toLowerCase();
+    if (!d) return null;
+    d = d.replace(/^https?:\/\//, '').replace(/^www\./, '').split('/')[0].split('?')[0];
+    return d || null;
+}
+
+// --- Website Search ---
+async function runByWebsite() {
+    const websiteInput = document.getElementById('website-input').value.trim();
+    if (!websiteInput) {
+        showToast('Please enter at least one website or domain', 'error');
+        return;
+    }
+
+    const websites = websiteInput
+        .split(/[,\n]+/)
+        .map(s => cleanDomain(s))
+        .filter(Boolean);
+
+    if (websites.length === 0) {
+        showToast('No valid domains found. Enter domains like google.com', 'error');
+        return;
+    }
+
+    const body = { website: websites };
+
+    // Also include any selected filters
+    const emailStatus = getSelectedValues('filter-email-status');
+    if (emailStatus.length) body.email_status = emailStatus;
+
+    const funcLevel = getSelectedValues('filter-functional-level');
+    if (funcLevel.length) body.functional_level = funcLevel;
+
+    const seniority = getSelectedValues('filter-seniority');
+    if (seniority.length) body.seniority_level = seniority;
+
+    await callApifyAPI(body);
+}
+
 // --- API Call ---
 async function runLeadFinder() {
+    const body = buildRequestBody();
+    await callApifyAPI(body);
+}
+
+// --- Shared API Call ---
+async function callApifyAPI(body) {
     const token = document.getElementById('api-token').value.trim();
     const actorId = document.getElementById('actor-id').value.trim();
     const maxItems = parseInt(document.getElementById('max-items').value) || 100;
@@ -113,8 +161,6 @@ async function runLeadFinder() {
         document.getElementById('settings-toggle').classList.add('active');
         return;
     }
-
-    const body = buildRequestBody();
 
     // Show loading, hide others
     showLoading(true);
